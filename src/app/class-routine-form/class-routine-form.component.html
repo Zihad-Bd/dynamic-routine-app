@@ -1,0 +1,64 @@
+<div class="outlay">
+  <form [formGroup]="routineForm">
+    <div class="container">
+    <h3>CLASS ROUTINE FORM</h3>
+    <div class="sub-container">
+      <div formGroupName="workingDays">
+        <label class="label-text">Working Days</label>
+        <div>
+          <mat-checkbox formControlName="Sunday">Sunday</mat-checkbox>
+          <mat-checkbox formControlName="Monday">Monday</mat-checkbox>
+          <mat-checkbox formControlName="Tuesday">Tuesday</mat-checkbox>
+          <mat-checkbox formControlName="Wednesday">Wednesday</mat-checkbox>
+          <mat-checkbox formControlName="Thursday">Thursday</mat-checkbox>
+          <mat-checkbox formControlName="Friday">Friday</mat-checkbox>
+          <mat-checkbox formControlName="Saturday">Saturday</mat-checkbox>
+        </div>
+      </div>
+      <div class="start-end-break">
+        <mat-form-field appearance="outline">
+          <mat-label class="label-text">Start Time</mat-label>
+          <mat-select formControlName="startTime">
+            <mat-option
+              *ngFor="let option of startTimeOptions"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="label-text">End Time</mat-label>
+          <mat-select formControlName="endTime">
+            <mat-option *ngFor="let option of endTimeOptions" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="label-text">Break Period</mat-label>
+          <mat-select formControlName="breakPeriod">
+            <mat-option
+              *ngFor="let option of breakPeriodOptions"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="routineForm.invalid"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </div>
+    </div>
+  </form>
+</div>

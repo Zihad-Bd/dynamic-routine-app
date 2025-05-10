@@ -1,0 +1,27 @@
+.outlay {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background-color: #fafafa;
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .sub-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      gap: 16px;
+      .label-text {
+        font-weight: 500;
+      }
+      .start-end-break {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+    }
+  }
+}

@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+.mat-mdc-text-field-wrapper {
+  padding: 0 16px !important;
+}
+
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 12px;
+}
+
+.cdk-overlay-pane {
+  background: #faf9fd;
+}
+
+.mat-mdc-option:hover {
+  background-color: lightgray !important;  /* Hover background color */
+  color: black !important;               /* Text color on hover */
+}
+
+.mdc-list-item--selected {
+  background-color: #dae2f9 !important;  /* Background for selected option */
+  color: black !important;               /* Text color for selected option */
+}
+
+
