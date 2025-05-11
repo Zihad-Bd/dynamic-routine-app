@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormArray,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -70,13 +71,63 @@ export class ClassRoutineFormComponent implements OnInit {
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       breakPeriod: ['', Validators.required],
+      numberOfTeachers: ['', [Validators.required, Validators.min(1)]],
+      teachers: this.fb.array([]),
+      numberOfRooms: ['', [Validators.required, Validators.min(1)]],
+      rooms: this.fb.array([]),
     });
   }
 
-  onSubmit(): void {
-    debugger
-    if (this.routineForm.valid) {
-      console.log(this.routineForm.value);
+  get teachers(): FormArray {
+    return this.routineForm.get('teachers') as FormArray;
+  }
+
+  addTeachers(count: number): void {
+    this.teachers.clear();
+    for (let i = 0; i < count; i++) {
+      this.teachers.push(
+        this.fb.group({
+          name: ['', Validators.required],
+          abbreviation: ['', Validators.required],
+        })
+      );
     }
+  }
+
+  onTeacherCountChange(): void {
+    const count = this.routineForm.get('numberOfTeachers')?.value;
+    if (count && count > 0) {
+      this.addTeachers(count);
+    }
+  }
+
+  get rooms(): FormArray {
+    return this.routineForm.get('rooms') as FormArray;
+  }
+
+  addRooms(count: number): void {
+    this.rooms.clear();
+    for (let i = 0; i < count; i++) {
+      this.rooms.push(
+        this.fb.group({
+          roomNo: ['', Validators.required],
+          isTheory: [false],
+          isLab: [false],
+          labCourses: ['', Validators.required],
+        })
+      );
+    }
+  }
+
+  onRoomCountChange(): void {
+    const count = this.routineForm.get('numberOfRooms')?.value;
+    if (count && count > 0) {
+      this.addRooms(count);
+    }
+  }
+
+  onSubmit(): void {
+    debugger;
+    console.log(this.routineForm.value);
   }
 }

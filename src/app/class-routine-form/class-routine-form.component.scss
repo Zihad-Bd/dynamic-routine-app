@@ -1,26 +1,62 @@
 .outlay {
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 24px;
-  background-color: #fafafa;
   .container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 800px;
     .sub-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: start;
       gap: 16px;
-      .label-text {
-        font-weight: 500;
+      .section {
+        background-color: #fafafa;
+        padding: 16px 16px 0 16px;
+        border-radius: 12px;
+        .sub-header {
+          font-weight: 600;
+        }
       }
-      .start-end-break {
+      .start-end-break-section {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 16px;
+      }
+      .teacher-info-section {
+        .teacher-details-area {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          .teacher-fields {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 16px;
+          }
+        }
+      }
+      .room-info-section {
+        .room-details-area {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          .rooms-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            .room-item {
+              .lab-course-field {
+                margin-left: 12px;
+              }
+            }
+          }
+        }
       }
     }
   }
