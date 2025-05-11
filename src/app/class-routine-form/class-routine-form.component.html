@@ -80,20 +80,22 @@
             formArrayName="teachers"
           >
             <label class="sub-header">Teacher Details</label>
-            <div
-              *ngFor="let teacher of teachers.controls; let i = index"
-              [formGroupName]="i"
-              class="teacher-fields"
-            >
-              <mat-form-field appearance="outline">
-                <mat-label>Teacher Name</mat-label>
-                <input matInput formControlName="name" />
-              </mat-form-field>
+            <div class="teachers-area">
+              <div
+                *ngFor="let teacher of teachers.controls; let i = index"
+                [formGroupName]="i"
+                class="teacher-item"
+              >
+                <mat-form-field appearance="outline">
+                  <mat-label>Teacher Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Abbreviation</mat-label>
-                <input matInput formControlName="abbreviation" />
-              </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Abbreviation</mat-label>
+                  <input matInput formControlName="abbreviation" />
+                </mat-form-field>
+              </div>
             </div>
           </div>
         </div>
@@ -159,7 +161,7 @@
                     formControlName="labCourses"
                     placeholder="ICE3142, CSE1292"
                   />
-                  <mat-hint>Enter course codes separated by commas</mat-hint>
+                  <mat-hint>Separated by commas</mat-hint>
                 </mat-form-field>
               </div>
             </div>

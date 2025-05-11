@@ -11,13 +11,13 @@
 }
 
 .mat-mdc-option:hover {
-  background-color: lightgray !important;  /* Hover background color */
-  color: black !important;               /* Text color on hover */
+  background-color: lightgray !important; /* Hover background color */
+  color: black !important; /* Text color on hover */
 }
 
 .mdc-list-item--selected {
-  background-color: #dae2f9 !important;  /* Background for selected option */
-  color: black !important;               /* Text color for selected option */
+  background-color: #dae2f9 !important; /* Background for selected option */
+  color: black !important; /* Text color for selected option */
 }
 
 mat-error {
@@ -25,15 +25,19 @@ mat-error {
 }
 
 /* Chrome, Safari, Edge, Opera */
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
+mat-hint {
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 400;
+}
