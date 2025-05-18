@@ -167,7 +167,198 @@
             </div>
           </div>
         </div>
+        <div class="section year-info-section">
+          <!-- 📅 Number of Years -->
+          <mat-form-field appearance="outline">
+            <mat-label>Number of Years</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="numberOfYears"
+              (input)="onYearCountChange()"
+              min="1"
+            />
+            <mat-error
+              *ngIf="routineForm.get('numberOfYears')?.hasError('required')"
+            >
+              This field is required
+            </mat-error>
+            <mat-error
+              *ngIf="routineForm.get('numberOfYears')?.hasError('min')"
+            >
+              Minimum value is 1
+            </mat-error>
+          </mat-form-field>
+          <!-- 🧾 Dynamic Year and Semester Section -->
+          <div
+            class="year-details-area"
+            formArrayName="years"
+            *ngIf="routineForm.get('numberOfYears')?.value > 0"
+          >
+            <label class="sub-header">Year Details</label>
+            <div class="years-area">
+              <div
+                *ngFor="let yearGroup of years.controls; let yearIndex = index"
+                [formGroupName]="yearIndex"
+                class="year-item"
+              >
+                <div class="year-semester">
+                  <!-- 🏷️ Year Name -->
+                  <mat-form-field appearance="outline">
+                    <mat-label>Year Name</mat-label>
+                    <input
+                      matInput
+                      [formControlName]="'yearName'"
+                      (input)="onYearNameChange(yearIndex)"
+                      required
+                    />
+                  </mat-form-field>
 
+                  <!-- 📜 Semester Names -->
+                  <mat-form-field appearance="outline">
+                    <mat-label>Semester Names (comma-separated)</mat-label>
+                    <input
+                      matInput
+                      formControlName="semesterNames"
+                      placeholder="odd, even"
+                      (input)="onSemesterChange(yearIndex)"
+                    />
+                    <mat-hint>Leave empty for single year-based input</mat-hint>
+                  </mat-form-field>
+                </div>
+                <!-- 🎓 Render coursesBySemester -->
+                <div
+                  formArrayName="coursesBySemester"
+                  class="semester-info-area"
+                >
+                  <div
+                    *ngFor="
+                      let sem of getCoursesBySemester(yearIndex).controls;
+                      let semIndex = index
+                    "
+                    [formGroupName]="semIndex"
+                    class="semester-item"
+                  >
+                    <label>
+                      {{
+                        getSemesterHeader(
+                          years.at(yearIndex).get("yearName")?.value,
+                          sem.get("semesterName")?.value
+                        )
+                      }}
+                    </label>
+                    <div class="course-info-area">
+                      <!-- 🔢 Number of Courses -->
+                      <mat-form-field appearance="outline">
+                        <mat-label>Number of Courses</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="numberOfCourses"
+                          (input)="onCourseCountChange(yearIndex, semIndex)"
+                          min="1"
+                        />
+                      </mat-form-field>
+
+                      <!-- 📘 Course List -->
+                      <div formArrayName="courses" class="course-details">
+                        <div
+                          *ngFor="
+                            let course of getCourses(yearIndex, semIndex)
+                              .controls;
+                            let cIdx = index
+                          "
+                          [formGroupName]="cIdx"
+                          class="course-item"
+                        >
+                          <div>Course {{ cIdx + 1 }} Details</div>
+                          <div class="course-info-area">
+                            <div class="course-info-fields">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Course Name (optional)</mat-label>
+                                <input matInput formControlName="courseName" />
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline">
+                                <mat-label>Course Code</mat-label>
+                                <input
+                                  matInput
+                                  formControlName="courseCode"
+                                  required
+                                />
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline">
+                                <mat-label>Course Credit</mat-label>
+                                <input
+                                  matInput
+                                  type="number"
+                                  formControlName="courseCredit"
+                                  required
+                                />
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline">
+                                <mat-label>Number of Teachers</mat-label>
+                                <input
+                                  matInput
+                                  type="number"
+                                  formControlName="numberOfTeachers"
+                                  (input)="
+                                    onCourseTeacherCountChange(
+                                      yearIndex,
+                                      semIndex,
+                                      cIdx
+                                    )
+                                  "
+                                  min="1"
+                                />
+                              </mat-form-field>
+                            </div>
+
+                            <!-- 👨‍🏫 Teacher Inputs -->
+                            <div formArrayName="teachers" class="course-teacher-area">
+                              <div
+                                *ngFor="
+                                  let t of getCourseTeachers(
+                                    yearIndex,
+                                    semIndex,
+                                    cIdx
+                                  ).controls;
+                                  let tIdx = index
+                                "
+                                [formGroupName]="tIdx"
+                                class="course-teacher-item"
+                              >
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Teacher Abbreviation</mat-label>
+                                  <input
+                                    matInput
+                                    formControlName="abbreviation"
+                                  />
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Classes/Week</mat-label>
+                                  <input
+                                    matInput
+                                    type="number"
+                                    formControlName="classesPerWeek"
+                                    min="1"
+                                  />
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <button
           mat-raised-button
           color="primary"

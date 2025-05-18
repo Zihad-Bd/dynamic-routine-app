@@ -75,6 +75,8 @@ export class ClassRoutineFormComponent implements OnInit {
       teachers: this.fb.array([]),
       numberOfRooms: ['', [Validators.required, Validators.min(1)]],
       rooms: this.fb.array([]),
+      numberOfYears: ['', [Validators.required, Validators.min(1)]],
+      years: this.fb.array([]),
     });
   }
 
@@ -124,6 +126,158 @@ export class ClassRoutineFormComponent implements OnInit {
     if (count && count > 0) {
       this.addRooms(count);
     }
+  }
+
+  get years(): FormArray {
+    return this.routineForm.get('years') as FormArray;
+  }
+
+  addYears(count: number): void {
+    this.years.clear();
+    for (let i = 0; i < count; i++) {
+      this.years.push(
+        this.fb.group({
+          yearName: ['', Validators.required],
+          semesterNames: [''], // comma separated
+          coursesBySemester: this.fb.array([]), // will populate later
+        })
+      );
+    }
+  }
+
+  onYearCountChange(): void {
+    const count = this.routineForm.get('numberOfYears')?.value;
+    if (count && count > 0) {
+      this.addYears(count);
+    }
+  }
+
+  getCoursesBySemester(yearIndex: number): FormArray {
+    return this.years.at(yearIndex).get('coursesBySemester') as FormArray;
+  }
+
+  getCourses(yearIndex: number, semesterIndex: number): FormArray {
+    return this.getCoursesBySemester(yearIndex)
+      .at(semesterIndex)
+      .get('courses') as FormArray;
+  }
+
+  getCourseTeachers(
+    yearIndex: number,
+    semesterIndex: number,
+    courseIndex: number
+  ): FormArray {
+    return this.getCourses(yearIndex, semesterIndex)
+      .at(courseIndex)
+      .get('teachers') as FormArray;
+  }
+
+  onYearNameChange(yearIndex: number): void {
+    const yearGroup = this.years.at(yearIndex) as FormGroup;
+
+    // Clear semester names
+    yearGroup.get('semesterNames')?.setValue('');
+
+    // Get year name value
+    const yearName = yearGroup.get('yearName')?.value || '';
+
+    const courseArray = this.getCoursesBySemester(yearIndex);
+    courseArray.clear();
+
+    if (yearName.trim()) {
+      // Add a single unnamed semester section
+      courseArray.push(
+        this.fb.group({
+          semesterName: [''],
+          numberOfCourses: [0],
+          courses: this.fb.array([]),
+        })
+      );
+    }
+  }
+
+  onSemesterChange(yearIndex: number): void {
+    const yearGroup = this.years.at(yearIndex) as FormGroup;
+    const semesterString = yearGroup.get('semesterNames')?.value || '';
+    const semesterList = semesterString
+      .split(',')
+      .map((s: string) => s.trim())
+      .filter((s: string) => s !== '');
+
+    const courseArray = this.getCoursesBySemester(yearIndex);
+    courseArray.clear();
+
+    // If no semester given, treat as unnamed single semester
+    if (semesterList.length === 0) {
+      courseArray.push(
+        this.fb.group({
+          semesterName: [''],
+          numberOfCourses: [0],
+          courses: this.fb.array([]),
+        })
+      );
+    } else {
+      semesterList.forEach((sem: string) => {
+        courseArray.push(
+          this.fb.group({
+            semesterName: [sem],
+            numberOfCourses: [0],
+            courses: this.fb.array([]),
+          })
+        );
+      });
+    }
+  }
+
+  onCourseCountChange(yearIndex: number, semesterIndex: number): void {
+    const semesterGroup = this.getCoursesBySemester(yearIndex).at(
+      semesterIndex
+    ) as FormGroup;
+    const count = semesterGroup.get('numberOfCourses')?.value;
+
+    const courseArray = semesterGroup.get('courses') as FormArray;
+    courseArray.clear();
+
+    for (let i = 0; i < count; i++) {
+      courseArray.push(
+        this.fb.group({
+          courseName: [''],
+          courseCode: ['', Validators.required],
+          courseCredit: [null, Validators.required],
+          numberOfTeachers: [0],
+          teachers: this.fb.array([]),
+        })
+      );
+    }
+  }
+
+  onCourseTeacherCountChange(
+    yearIndex: number,
+    semesterIndex: number,
+    courseIndex: number
+  ): void {
+    const courseGroup = this.getCourses(yearIndex, semesterIndex).at(
+      courseIndex
+    ) as FormGroup;
+    const count = courseGroup.get('numberOfTeachers')?.value;
+    const teacherArray = courseGroup.get('teachers') as FormArray;
+    teacherArray.clear();
+
+    for (let i = 0; i < count; i++) {
+      teacherArray.push(
+        this.fb.group({
+          abbreviation: ['', Validators.required],
+          classesPerWeek: [1, [Validators.required, Validators.min(1)]],
+        })
+      );
+    }
+  }
+
+  getSemesterHeader(year: string, semester: string): string {
+    if (!semester) {
+      return `${year} Details`;
+    }
+    return `${year} ${semester} Details`;
   }
 
   onSubmit(): void {
