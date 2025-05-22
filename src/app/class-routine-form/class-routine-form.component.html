@@ -1,10 +1,10 @@
 <div class="outlay">
   <form [formGroup]="routineForm">
     <div class="container">
-      <h3>CLASS ROUTINE FORM</h3>
+      <h1>CLASS ROUTINE FORM</h1>
       <div class="sub-container">
         <div class="section" formGroupName="workingDays">
-          <label class="sub-header">Working Days</label>
+          <label class="header">Working Days</label>
           <div>
             <mat-checkbox formControlName="Sunday">Sunday</mat-checkbox>
             <mat-checkbox formControlName="Monday">Monday</mat-checkbox>
@@ -26,6 +26,11 @@
                 {{ option }}
               </mat-option>
             </mat-select>
+            <mat-error
+              *ngIf="routineForm.get('startTime')?.hasError('required')"
+            >
+              This field is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -38,6 +43,9 @@
                 {{ option }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="routineForm.get('endTime')?.hasError('required')">
+              This field is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -50,6 +58,11 @@
                 {{ option }}
               </mat-option>
             </mat-select>
+            <mat-error
+              *ngIf="routineForm.get('breakPeriod')?.hasError('required')"
+            >
+              This field is required
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="section teacher-info-section">
@@ -79,7 +92,7 @@
             class="teacher-details-area"
             formArrayName="teachers"
           >
-            <label class="sub-header">Teacher Details</label>
+            <label class="header">Teacher Details</label>
             <div class="teachers-area">
               <div
                 *ngFor="let teacher of teachers.controls; let i = index"
@@ -89,11 +102,19 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Teacher Name</mat-label>
                   <input matInput formControlName="name" />
+                  <mat-error *ngIf="teacher.get('name')?.hasError('required')">
+                    This field is required
+                  </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>Abbreviation</mat-label>
                   <input matInput formControlName="abbreviation" />
+                  <mat-error
+                    *ngIf="teacher.get('abbreviation')?.hasError('required')"
+                  >
+                    This field is required
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -129,7 +150,7 @@
             formArrayName="rooms"
             *ngIf="routineForm.get('numberOfRooms')?.value > 0"
           >
-            <label class="sub-header">Room Details</label>
+            <label class="header">Room Details</label>
             <div class="rooms-area">
               <div
                 *ngFor="let room of rooms.controls; let i = index"
@@ -195,7 +216,7 @@
             formArrayName="years"
             *ngIf="routineForm.get('numberOfYears')?.value > 0"
           >
-            <label class="sub-header">Year Details</label>
+            <label class="header">Year Details</label>
             <div class="years-area">
               <div
                 *ngFor="let yearGroup of years.controls; let yearIndex = index"
@@ -210,8 +231,12 @@
                       matInput
                       [formControlName]="'yearName'"
                       (input)="onYearNameChange(yearIndex)"
-                      required
                     />
+                    <mat-error
+                      *ngIf="yearGroup.get('yearName')?.hasError('required')"
+                    >
+                      This field is required
+                    </mat-error>
                   </mat-form-field>
 
                   <!-- 📜 Semester Names -->
@@ -239,7 +264,15 @@
                     [formGroupName]="semIndex"
                     class="semester-item"
                   >
-                    <label>
+                    <!-- <label>
+                      {{
+                        getSemesterHeader(
+                          years.at(yearIndex).get("yearName")?.value,
+                          sem.get("semesterName")?.value
+                        )
+                      }}
+                    </label> -->
+                    <label class="sub-header">
                       {{
                         getSemesterHeader(
                           years.at(yearIndex).get("yearName")?.value,
@@ -258,6 +291,13 @@
                           (input)="onCourseCountChange(yearIndex, semIndex)"
                           min="1"
                         />
+                        <mat-error
+                          *ngIf="
+                            sem.get('numberOfCourses')?.hasError('required')
+                          "
+                        >
+                          This field is required
+                        </mat-error>
                       </mat-form-field>
 
                       <!-- 📘 Course List -->
@@ -271,8 +311,8 @@
                           [formGroupName]="cIdx"
                           class="course-item"
                         >
-                          <div>Course {{ cIdx + 1 }} Details</div>
-                          <div class="course-info-area">
+                          <div class="sub-sub-header">Course {{ cIdx + 1 }} Details</div>
+                          <div class="course-fields-area">
                             <div class="course-info-fields">
                               <mat-form-field appearance="outline">
                                 <mat-label>Course Name (optional)</mat-label>
@@ -281,11 +321,16 @@
 
                               <mat-form-field appearance="outline">
                                 <mat-label>Course Code</mat-label>
-                                <input
-                                  matInput
-                                  formControlName="courseCode"
-                                  required
-                                />
+                                <input matInput formControlName="courseCode" />
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('courseCode')
+                                      ?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
                               </mat-form-field>
 
                               <mat-form-field appearance="outline">
@@ -294,59 +339,156 @@
                                   matInput
                                   type="number"
                                   formControlName="courseCredit"
-                                  required
                                 />
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('courseCredit')
+                                      ?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
+                              </mat-form-field>
+                              <mat-form-field appearance="outline">
+                                <mat-label>Course Type</mat-label>
+                                <mat-select formControlName="courseType">
+                                  <mat-option value="theory">Theory</mat-option>
+                                  <mat-option value="lab">Lab</mat-option>
+                                </mat-select>
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('courseType')
+                                      ?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
                               </mat-form-field>
 
+                              <!-- Hours per Class Input -->
                               <mat-form-field appearance="outline">
-                                <mat-label>Number of Teachers</mat-label>
+                                <mat-label>Hours/Class</mat-label>
                                 <input
                                   matInput
                                   type="number"
-                                  formControlName="numberOfTeachers"
-                                  (input)="
-                                    onCourseTeacherCountChange(
-                                      yearIndex,
-                                      semIndex,
-                                      cIdx
-                                    )
-                                  "
-                                  min="1"
+                                  formControlName="hoursPerClass"
                                 />
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('hoursPerClass')
+                                      ?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
+                                <mat-error
+                                  *ngIf="
+                                    course.get('hoursPerClass')?.hasError('min')
+                                  "
+                                >
+                                  Minimum value is 1
+                                </mat-error>
                               </mat-form-field>
                             </div>
-
-                            <!-- 👨‍🏫 Teacher Inputs -->
-                            <div formArrayName="teachers" class="course-teacher-area">
-                              <div
-                                *ngFor="
-                                  let t of getCourseTeachers(
-                                    yearIndex,
-                                    semIndex,
-                                    cIdx
-                                  ).controls;
-                                  let tIdx = index
-                                "
-                                [formGroupName]="tIdx"
-                                class="course-teacher-item"
-                              >
+                            <div class="course-teachers-area">
+                              <div>
                                 <mat-form-field appearance="outline">
-                                  <mat-label>Teacher Abbreviation</mat-label>
-                                  <input
-                                    matInput
-                                    formControlName="abbreviation"
-                                  />
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                  <mat-label>Classes/Week</mat-label>
+                                  <mat-label>Number of Teachers</mat-label>
                                   <input
                                     matInput
                                     type="number"
-                                    formControlName="classesPerWeek"
+                                    formControlName="numberOfTeachers"
+                                    (input)="
+                                      onCourseTeacherCountChange(
+                                        yearIndex,
+                                        semIndex,
+                                        cIdx
+                                      )
+                                    "
                                     min="1"
                                   />
+                                  <mat-error
+                                    *ngIf="
+                                      course
+                                        .get('numberOfTeachers')
+                                        ?.hasError('required')
+                                    "
+                                  >
+                                    This field is required
+                                  </mat-error>
+                                  <mat-error
+                                    *ngIf="
+                                      course
+                                        .get('numberOfTeachers')
+                                        ?.hasError('min')
+                                    "
+                                  >
+                                    Minimum value is 1
+                                  </mat-error>
                                 </mat-form-field>
+                              </div>
+                              <div
+                                formArrayName="teachers"
+                                class="course-teacher-details"
+                              >
+                                <div
+                                  *ngFor="
+                                    let t of getCourseTeachers(
+                                      yearIndex,
+                                      semIndex,
+                                      cIdx
+                                    ).controls;
+                                    let tIdx = index
+                                  "
+                                  [formGroupName]="tIdx"
+                                  class="course-teacher-item"
+                                >
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Teacher Abbreviation</mat-label>
+                                    <input
+                                      matInput
+                                      formControlName="abbreviation"
+                                    />
+                                    <mat-error
+                                      *ngIf="
+                                        t
+                                          .get('abbreviation')
+                                          ?.hasError('required')
+                                      "
+                                    >
+                                      This field is required
+                                    </mat-error>
+                                  </mat-form-field>
+
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Classes/Week</mat-label>
+                                    <input
+                                      matInput
+                                      type="number"
+                                      formControlName="classesPerWeek"
+                                      min="1"
+                                    />
+                                    <mat-error
+                                      *ngIf="
+                                        t
+                                          .get('classesPerWeek')
+                                          ?.hasError('required')
+                                      "
+                                    >
+                                      This field is required
+                                    </mat-error>
+                                    <mat-error
+                                      *ngIf="
+                                        t.get('classesPerWeek')?.hasError('min')
+                                      "
+                                    >
+                                      Minimum value is 1
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
                               </div>
                             </div>
                           </div>

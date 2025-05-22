@@ -189,7 +189,7 @@ export class ClassRoutineFormComponent implements OnInit {
       courseArray.push(
         this.fb.group({
           semesterName: [''],
-          numberOfCourses: [0],
+          numberOfCourses: ['', [Validators.required, Validators.min(1)]],
           courses: this.fb.array([]),
         })
       );
@@ -212,7 +212,7 @@ export class ClassRoutineFormComponent implements OnInit {
       courseArray.push(
         this.fb.group({
           semesterName: [''],
-          numberOfCourses: [0],
+          numberOfCourses: ['', [Validators.required, Validators.min(1)]],
           courses: this.fb.array([]),
         })
       );
@@ -221,7 +221,7 @@ export class ClassRoutineFormComponent implements OnInit {
         courseArray.push(
           this.fb.group({
             semesterName: [sem],
-            numberOfCourses: [0],
+            numberOfCourses: ['', [Validators.required, Validators.min(1)]],
             courses: this.fb.array([]),
           })
         );
@@ -244,7 +244,9 @@ export class ClassRoutineFormComponent implements OnInit {
           courseName: [''],
           courseCode: ['', Validators.required],
           courseCredit: [null, Validators.required],
-          numberOfTeachers: [0],
+          courseType: ['', Validators.required], // NEW
+          hoursPerClass: ['', [Validators.required, Validators.min(1)]],
+          numberOfTeachers: ['', [Validators.required, Validators.min(1)]],
           teachers: this.fb.array([]),
         })
       );
@@ -267,7 +269,7 @@ export class ClassRoutineFormComponent implements OnInit {
       teacherArray.push(
         this.fb.group({
           abbreviation: ['', Validators.required],
-          classesPerWeek: [1, [Validators.required, Validators.min(1)]],
+          classesPerWeek: ['', [Validators.required, Validators.min(1)]],
         })
       );
     }
@@ -281,7 +283,7 @@ export class ClassRoutineFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    debugger;
     console.log(this.routineForm.value);
+    debugger;
   }
 }

@@ -18,8 +18,9 @@
         background-color: #fafafa;
         padding: 16px 16px 0 16px;
         border-radius: 12px;
-        .sub-header {
+        .header {
           font-weight: 600;
+          font-size: 20px;
         }
       }
       .start-end-break-section {
@@ -70,10 +71,14 @@
           .years-area {
             display: flex;
             flex-direction: column;
+            row-gap: 16px;
             .year-item {
               display: flex;
               flex-direction: column;
               row-gap: 24px;
+              padding: 16px;
+              border: 1px solid gray;
+              border-radius: 12px;
               .year-semester {
                 display: flex;
                 flex-direction: row;
@@ -83,17 +88,29 @@
               .semester-info-area {
                 display: flex;
                 flex-direction: column;
+                row-gap: 16px;
                 .semester-item {
                   display: flex;
                   flex-direction: column;
                   row-gap: 16px;
+                  padding: 16px 16px 0 16px;
+                  border: 1px solid gray;
+                  border-radius: 12px;
+                  .sub-header {
+                    font-weight: 600;
+                    font-size: 18px;
+                  }
                   .course-info-area {
                     .course-details {
                       .course-item {
                         display: flex;
                         flex-direction: column;
                         row-gap: 16px;
-                        .course-info-area {
+                        .sub-sub-header {
+                          font-size: 16px;
+                          font-weight: 600;
+                        }
+                        .course-fields-area {
                           display: flex;
                           flex-direction: column;
                           .course-info-fields {
@@ -101,16 +118,19 @@
                             flex-direction: row;
                             flex-wrap: wrap;
                             column-gap: 16px;
-                          
                           }
-                          .course-teacher-area {
+                          .course-teachers-area {
                             display: flex;
                             flex-direction: column;
-                            .course-teacher-item {
+                            .course-teacher-details {
                               display: flex;
-                              flex-direction: row;
-                              flex-wrap: wrap;
-                              column-gap: 16px;
+                              flex-direction: column;
+                              .course-teacher-item {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: wrap;
+                                column-gap: 16px;
+                              }
                             }
                           }
                         }
