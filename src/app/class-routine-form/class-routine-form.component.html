@@ -3,8 +3,28 @@
     <div class="container">
       <h1>CLASS ROUTINE FORM</h1>
       <div class="sub-container">
+        <div class="section uni-dept-section">
+          <mat-form-field appearance="outline">
+            <mat-label>University Name</mat-label>
+            <input matInput formControlName="universityName" />
+            <mat-error
+              *ngIf="routineForm.get('universityName')?.hasError('required')"
+            >
+              This field is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Department Name</mat-label>
+            <input matInput formControlName="departmentName" />
+            <mat-error
+              *ngIf="routineForm.get('departmentName')?.hasError('required')"
+            >
+              This field is required
+            </mat-error>
+          </mat-form-field>
+        </div>
         <div class="section" formGroupName="workingDays">
-          <label class="header">Working Days</label>
+          <label class="header">Class Days</label>
           <div>
             <mat-checkbox formControlName="Sunday">Sunday</mat-checkbox>
             <mat-checkbox formControlName="Monday">Monday</mat-checkbox>
@@ -121,8 +141,8 @@
           </div>
         </div>
         <!-- Room Info Section -->
-        <div class="section room-info-section">
-          <!-- Number-of-rooms input (unchanged) -->
+        <!-- <div class="section room-info-section">
+         
           <mat-form-field appearance="outline">
             <mat-label>Number of Rooms</mat-label>
             <input
@@ -144,7 +164,7 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Dynamic room list -->
+          
           <div
             class="room-details-area"
             formArrayName="rooms"
@@ -157,7 +177,7 @@
                 [formGroupName]="i"
                 class="room-item"
               >
-                <!-- 🆕 Room-No input -->
+              
                 <mat-form-field appearance="outline" class="room-no-field">
                   <mat-label>Room No.</mat-label>
                   <input matInput formControlName="roomNo" />
@@ -166,11 +186,11 @@
                   </mat-error>
                 </mat-form-field>
 
-                <!-- Theory / Lab checkboxes -->
+                
                 <mat-checkbox formControlName="isTheory">Theory</mat-checkbox>
                 <mat-checkbox formControlName="isLab">Lab</mat-checkbox>
 
-                <!-- Lab course codes (shown only if Lab) -->
+               
                 <mat-form-field
                   appearance="outline"
                   *ngIf="room.get('isLab')?.value"
@@ -187,7 +207,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="section year-info-section">
           <!-- 📅 Number of Years -->
           <mat-form-field appearance="outline">
@@ -311,7 +331,9 @@
                           [formGroupName]="cIdx"
                           class="course-item"
                         >
-                          <div class="sub-sub-header">Course {{ cIdx + 1 }} Details</div>
+                          <div class="sub-sub-header">
+                            Course {{ cIdx + 1 }} Details
+                          </div>
                           <div class="course-fields-area">
                             <div class="course-info-fields">
                               <mat-form-field appearance="outline">
@@ -340,15 +362,6 @@
                                   type="number"
                                   formControlName="courseCredit"
                                 />
-                                <mat-error
-                                  *ngIf="
-                                    course
-                                      .get('courseCredit')
-                                      ?.hasError('required')
-                                  "
-                                >
-                                  This field is required
-                                </mat-error>
                               </mat-form-field>
                               <mat-form-field appearance="outline">
                                 <mat-label>Course Type</mat-label>
@@ -367,6 +380,34 @@
                                 </mat-error>
                               </mat-form-field>
 
+                              <mat-form-field appearance="outline">
+                                <mat-label>Total Classes/Week</mat-label>
+                                <input
+                                  matInput
+                                  type="number"
+                                  [formControlName]="'totalClassesPerWeek'"
+                                  required
+                                  min="0"
+                                />
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('totalClassesPerWeek')
+                                      ?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
+                                <mat-error
+                                  *ngIf="
+                                    course
+                                      .get('totalClassesPerWeek')
+                                      ?.hasError('min')
+                                  "
+                                >
+                                  Minimum value is 1
+                                </mat-error>
+                              </mat-form-field>
                               <!-- Hours per Class Input -->
                               <mat-form-field appearance="outline">
                                 <mat-label>Hours/Class</mat-label>
@@ -392,6 +433,21 @@
                                   Minimum value is 1
                                 </mat-error>
                               </mat-form-field>
+                              <mat-form-field appearance="outline">
+                                <mat-label>Rooms (comma-separated)</mat-label>
+                                <input
+                                  matInput
+                                  placeholder="101, 102, 103"
+                                  formControlName="rooms"
+                                />
+                                <mat-error
+                                  *ngIf="
+                                    course.get('rooms')?.hasError('required')
+                                  "
+                                >
+                                  This field is required
+                                </mat-error>
+                              </mat-form-field>
                             </div>
                             <div class="course-teachers-area">
                               <div>
@@ -408,8 +464,8 @@
                                         cIdx
                                       )
                                     "
-                                    min="1"
                                   />
+                                  <mat-hint>Enter 0 if no teacher</mat-hint>
                                   <mat-error
                                     *ngIf="
                                       course
@@ -426,7 +482,7 @@
                                         ?.hasError('min')
                                     "
                                   >
-                                    Minimum value is 1
+                                    Cannot be negative
                                   </mat-error>
                                 </mat-form-field>
                               </div>

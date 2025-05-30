@@ -23,6 +23,12 @@
           font-size: 20px;
         }
       }
+      .uni-dept-section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 16px;
+      }
       .start-end-break-section {
         display: flex;
         flex-direction: row;
