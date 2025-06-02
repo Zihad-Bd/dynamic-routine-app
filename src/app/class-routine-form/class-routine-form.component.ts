@@ -1,3 +1,4 @@
+import { GenerateRoutineService } from './../services/generate-routine.service';
 import { HelperService } from './../services/helper.service';
 import { ManualDataProviderService } from './../services/manual-data-provider.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { RoutineComponent } from '../routine/routine.component';
 
 @Component({
   selector: 'app-class-routine-form',
@@ -88,15 +91,13 @@ export class ClassRoutineFormComponent implements OnInit {
     '7 pm - 8 pm',
   ];
   finalData: any;
-  daysInfo: string[] = [];
-  yearsSemestersInfo: any[] = [];
-  timeSlotsInfo: string[] = [];
-  breakPeriodTimeSlotIndex: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private manualDataProviderService: ManualDataProviderService,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private dialog: MatDialog,
+    private generateRoutineService: GenerateRoutineService
   ) {}
 
   ngOnInit(): void {
@@ -302,17 +303,24 @@ export class ClassRoutineFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.routineForm.value);
+    //console.log(this.routineForm.value);
     //this.finalData = this.routineForm.value;
     // Use the below data for debugging purpose
     this.finalData = this.manualDataProviderService.getManualData();
-    this.daysInfo = this.helperService.getDaysInfo(this.finalData.workingDays);
-    this.yearsSemestersInfo = this.helperService.getYearsSemestersInfo(
-      this.finalData.years
-    );
-    this.helperService.processTimeSlots(this.finalData.startTime, this.finalData.endTime, this.finalData.breakPeriod);
-    this.timeSlotsInfo = this.helperService.getTimeSlots();
-    this.breakPeriodTimeSlotIndex = this.helperService.getBreakPeriodTimeSlotIndex();
-    debugger;
+    this.helperService.storeFinalData(this.finalData);
+    const daysInfo = this.helperService.getDaysInfo();
+    const yearsSemestersInfo = this.helperService.getYearsSemestersInfo();
+    const timeSlotsInfo = this.helperService.getTimeSlots();
+    const breakPeriodTimeSlotIndex = this.helperService.getBreakPeriodTimeSlotIndex();
+    this.generateRoutineService.generateRoutines(breakPeriodTimeSlotIndex);
+    const bestRoutine = this.generateRoutineService.getBestRoutine();
+    this.dialog.open(RoutineComponent, {
+      data: {
+        daysInfo,
+        yearsSemestersInfo,
+        timeSlotsInfo,
+        bestRoutine,
+      },
+    });
   }
 }

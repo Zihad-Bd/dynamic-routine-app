@@ -4,12 +4,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class HelperService {
+  finalData: any;
   startTimeNum: number = 0;
   endTimeNum: number = 0;
   breakPeriodStartTimeNum: number = 0;
   constructor() {}
 
-  getDaysInfo(workingDays: any): string[] {
+  storeFinalData(finalData: any) {
+    this.finalData = finalData;
+  }
+
+  getDaysInfo(): string[] {
+    let workingDays = this.finalData.workingDays;
     const daysInfo: string[] = [];
     if (workingDays.Sunday) daysInfo.push('Sun');
     if (workingDays.Monday) daysInfo.push('Mon');
@@ -21,7 +27,8 @@ export class HelperService {
     return daysInfo;
   }
 
-  getYearsSemestersInfo(years: any[]): any[] {
+  getYearsSemestersInfo(): any[] {
+    let years = this.finalData.years;
     const yearsSemestersInfo: any[] = [];
 
     years?.forEach((year: any) => {
@@ -35,14 +42,37 @@ export class HelperService {
           info.semesterNames.push(semester.semesterName);
         }
       });
-
+      if (info.semesterNames.length == 0) {
+        info.semesterNames.push('');
+      }
       yearsSemestersInfo.push(info);
     });
 
     return yearsSemestersInfo;
   }
 
-  processTimeSlots(startTime: string, endTime: string, breakPeriod: string) {
+  getTimeSlots() {
+    this.processTimeSlots();
+    let timeSlots: string[] = [];
+    for (let i = this.startTimeNum; i <= this.endTimeNum - 1; ++i) {
+      let first = i,
+        second = i + 1;
+      if (first > 12) {
+        first -= 12;
+      }
+      if (second > 12) {
+        second -= 12;
+      }
+      let timeSlot: string = `${first}:05 - ${second}:00`;
+      timeSlots.push(timeSlot);
+    }
+    return timeSlots;
+  }
+
+  processTimeSlots() {
+    let startTime = this.finalData.startTime;
+    let endTime = this.finalData.endTime;
+    let breakPeriod = this.finalData.breakPeriod;
     this.startTimeNum = this.getIntegerPartOfTime(startTime);
     this.endTimeNum = this.getIntegerPartOfTime(endTime);
     this.breakPeriodStartTimeNum =
@@ -88,22 +118,5 @@ export class HelperService {
         return i;
       }
     }
-  }
-
-  getTimeSlots() {
-    let timeSlots: string[] = [];
-    for (let i = this.startTimeNum; i <= this.endTimeNum - 1; ++i) {
-      let first = i,
-        second = i + 1;
-      if (first > 12) {
-        first -= 12;
-      }
-      if (second > 12) {
-        second -= 12;
-      }
-      let timeSlot: string = `${first}:05 - ${second}:00`;
-      timeSlots.push(timeSlot);
-    }
-    return timeSlots;
   }
 }
