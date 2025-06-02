@@ -70,11 +70,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'HH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'LN',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -112,15 +110,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'RUM',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'AI',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -136,19 +131,15 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'EH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'SR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'MI',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -164,11 +155,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RY',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -229,11 +218,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'AI',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -249,11 +236,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RY',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -269,15 +254,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'HH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-2',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -293,11 +275,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'LN',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-2',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -310,7 +290,7 @@ export class ManualDataProviderService {
                   numberOfTeachers: 0,
                   rooms: '437',
                   totalClassesPerWeek: 3,
-                  teachers: [{}],
+                  teachers: [],
                 },
                 {
                   courseCode: 'ACCO2111',
@@ -335,15 +315,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'MRH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'GR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'AI',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -371,11 +348,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RUM',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'FA-2',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -391,11 +366,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'DD',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -411,11 +384,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'RUM',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -431,15 +402,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'DD',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'SR',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -455,11 +423,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AI',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'FA-2',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -475,11 +441,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'HK',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'MI',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -495,15 +459,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'HK',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'RUM',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -519,15 +480,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'MRH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'AI',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'FA-2',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -555,11 +513,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'DD',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'GR',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -575,11 +531,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 2,
                     },
                     {
                       abbreviation: 'LN',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -595,11 +549,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'MRH',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -615,15 +567,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'FA-1',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'HK',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'LN',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -639,11 +588,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'HH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'SR',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -659,11 +606,9 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'RH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'GR',
-                      classesPerWeek: 2,
                     },
                   ],
                 },
@@ -679,15 +624,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'DD',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'HH',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'SR',
-                      classesPerWeek: 1,
                     },
                   ],
                 },
@@ -703,15 +645,12 @@ export class ManualDataProviderService {
                   teachers: [
                     {
                       abbreviation: 'AMAR',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'RUM',
-                      classesPerWeek: 1,
                     },
                     {
                       abbreviation: 'MI',
-                      classesPerWeek: 1,
                     },
                   ],
                 },

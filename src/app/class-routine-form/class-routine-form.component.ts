@@ -117,8 +117,6 @@ export class ClassRoutineFormComponent implements OnInit {
       breakPeriod: ['', Validators.required],
       numberOfTeachers: ['', [Validators.required, Validators.min(1)]],
       teachers: this.fb.array([]),
-      // numberOfRooms: ['', [Validators.required, Validators.min(1)]],
-      // rooms: this.fb.array([]),
       numberOfYears: ['', [Validators.required, Validators.min(1)]],
       years: this.fb.array([]),
     });
@@ -146,31 +144,6 @@ export class ClassRoutineFormComponent implements OnInit {
       this.addTeachers(count);
     }
   }
-
-  // get rooms(): FormArray {
-  //   return this.routineForm.get('rooms') as FormArray;
-  // }
-
-  // addRooms(count: number): void {
-  //   this.rooms.clear();
-  //   for (let i = 0; i < count; i++) {
-  //     this.rooms.push(
-  //       this.fb.group({
-  //         roomNo: ['', Validators.required],
-  //         isTheory: [false],
-  //         isLab: [false],
-  //         labCourses: ['', Validators.required],
-  //       })
-  //     );
-  //   }
-  // }
-
-  // onRoomCountChange(): void {
-  //   const count = this.routineForm.get('numberOfRooms')?.value;
-  //   if (count && count > 0) {
-  //     this.addRooms(count);
-  //   }
-  // }
 
   get years(): FormArray {
     return this.routineForm.get('years') as FormArray;
@@ -315,7 +288,7 @@ export class ClassRoutineFormComponent implements OnInit {
       teacherArray.push(
         this.fb.group({
           abbreviation: ['', Validators.required],
-          classesPerWeek: ['', [Validators.required, Validators.min(1)]],
+          // classesPerWeek: ['', [Validators.required, Validators.min(1)]],
         })
       );
     }
