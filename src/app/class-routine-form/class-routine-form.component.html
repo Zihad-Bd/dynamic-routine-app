@@ -120,11 +120,8 @@
                 class="teacher-item"
               >
                 <mat-form-field appearance="outline">
-                  <mat-label>Teacher Name</mat-label>
+                  <mat-label>Teacher Name (optional)</mat-label>
                   <input matInput formControlName="name" />
-                  <mat-error *ngIf="teacher.get('name')?.hasError('required')">
-                    This field is required
-                  </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">

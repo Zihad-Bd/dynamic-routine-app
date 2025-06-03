@@ -132,7 +132,7 @@ export class ClassRoutineFormComponent implements OnInit {
     for (let i = 0; i < count; i++) {
       this.teachers.push(
         this.fb.group({
-          name: ['', Validators.required],
+          name: [''],
           abbreviation: ['', Validators.required],
         })
       );
