@@ -267,7 +267,7 @@ export class ClassRoutineFormComponent implements OnInit {
           totalClassesPerWeek: [null, [Validators.required, Validators.min(1)]],
           numberOfTeachers: ['', [Validators.required, Validators.min(0)]],
           teachers: this.fb.array([]),
-          rooms: ['', Validators.required],
+          rooms: [''],
         })
       );
     }
@@ -312,7 +312,7 @@ export class ClassRoutineFormComponent implements OnInit {
     const yearsSemestersInfo = this.helperService.getYearsSemestersInfo();
     const timeSlotsInfo = this.helperService.getTimeSlots();
     const breakPeriodTimeSlotIndex = this.helperService.getBreakPeriodTimeSlotIndex();
-    this.generateRoutineService.generateRoutines(breakPeriodTimeSlotIndex);
+    this.generateRoutineService.generateRoutines(breakPeriodTimeSlotIndex, daysInfo, timeSlotsInfo);
     const bestRoutine = this.generateRoutineService.getBestRoutine();
     this.dialog.open(RoutineComponent, {
       data: {

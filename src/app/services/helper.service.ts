@@ -14,6 +14,10 @@ export class HelperService {
     this.finalData = finalData;
   }
 
+  getFinalData() {
+    return this.finalData;
+  }
+
   getDaysInfo(): string[] {
     let workingDays = this.finalData.workingDays;
     const daysInfo: string[] = [];

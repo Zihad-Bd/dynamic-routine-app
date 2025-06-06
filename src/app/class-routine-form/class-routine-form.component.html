@@ -361,13 +361,6 @@
                                   placeholder="101, 102, 103"
                                   formControlName="rooms"
                                 />
-                                <mat-error
-                                  *ngIf="
-                                    course.get('rooms')?.hasError('required')
-                                  "
-                                >
-                                  This field is required
-                                </mat-error>
                               </mat-form-field>
                             </div>
                             <div class="course-teachers-area">

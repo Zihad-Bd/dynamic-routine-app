@@ -65,7 +65,7 @@ export class ManualDataProviderService {
                   courseType: 'theory',
                   hoursPerClass: 1,
                   numberOfTeachers: 2,
-                  rooms: '403',
+                  rooms: '403, 1010',
                   totalClassesPerWeek: 3,
                   teachers: [
                     {
@@ -83,7 +83,8 @@ export class ManualDataProviderService {
                   courseType: 'theory',
                   hoursPerClass: 1,
                   numberOfTeachers: 0,
-                  rooms: '403',
+                  //rooms: '403',
+                  rooms: '',
                   totalClassesPerWeek: 2,
                   teachers: [],
                 },
