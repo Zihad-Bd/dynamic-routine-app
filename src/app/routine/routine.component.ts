@@ -3,17 +3,20 @@ import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../services/helper.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-routine',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './routine.component.html',
   styleUrl: './routine.component.scss',
 })
 export class RoutineComponent {
+  universityName: string = '';
+  departmentName: string = '';
   daysInfo: string[] = [];
   yearsSemestersInfo: any[] = [];
-  timeSlotsInfo: string[] = [];
+  timeSlotsInfo: string[] = ['23', '33'];
   bestRoutine: any;
 
   constructor(
@@ -21,13 +24,15 @@ export class RoutineComponent {
     private helperService: HelperService,
     private generateRoutineService: GenerateRoutineService
   ) {
+    this.universityName = data.universityName;
+    this.departmentName = data.departmentName;
     this.daysInfo = data.daysInfo;
     this.yearsSemestersInfo = data.yearsSemestersInfo;
     this.timeSlotsInfo = data.timeSlotsInfo;
     this.bestRoutine = data.bestRoutine;
-    debugger;
   }
 
   ngOnInit(): void {
+    console.log("timeSlotsInfo:", this.timeSlotsInfo);
   }
 }

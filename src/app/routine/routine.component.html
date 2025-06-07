@@ -1,1 +1,17 @@
-<div> {{bestRoutine[0][0][0][0].courseCode}} </div>
+<div class="container">
+  <div class="varsity-name">{{ universityName }}</div>
+  <div class="dept-name">{{ departmentName }}</div>
+  <div class="class-routine-text">Class Routine</div>
+  <div class="routine-container">
+    <div class="column-names">
+      <div class="day">Day</div>
+      <div class="year border-top-right-bottom">Year</div>
+      <div class="sem border-top-right-bottom">Sem.</div>
+      <div class="slot-box border-top-right-bottom" *ngFor="let timeSlot of timeSlotsInfo">
+        {{ timeSlot }}
+      </div>
+    </div>
+  </div>
+</div>
+
+

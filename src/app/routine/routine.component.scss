@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .varsity-name,
+  .dept-name,
+  .class-routine-text {
+    text-align: center; // Center align text only
+  }
+
+  .routine-container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto; // Enable horizontal scrolling
+    width: 100%; // Let it take full page width
+
+    .column-names {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      width: max-content; // Let it grow as wide as needed
+
+      .day {
+        width: 50px;
+        flex: 0 0 auto;
+        text-align: center;
+        border: 1px solid gray;
+      }
+
+      .year {
+        width: 50px;
+        flex: 0 0 auto;
+        text-align: center;
+      }
+
+      .sem {
+        width: 50px;
+        flex: 0 0 auto;
+        text-align: center;
+      }
+
+      .slot-box {
+        width: 100px;
+        flex: 0 0 auto;
+        text-align: center;
+      }
+
+      .border-top-right-bottom {
+        border-top: 1px solid gray;
+        border-right: 1px solid gray;
+        border-bottom: 1px solid gray;
+      }
+    }
+  }
+}

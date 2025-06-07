@@ -308,14 +308,25 @@ export class ClassRoutineFormComponent implements OnInit {
     // Use the below data for debugging purpose
     this.finalData = this.manualDataProviderService.getManualData();
     this.helperService.storeFinalData(this.finalData);
+    const universityName = this.finalData.universityName;
+    const departmentName = this.finalData.departmentName;
     const daysInfo = this.helperService.getDaysInfo();
     const yearsSemestersInfo = this.helperService.getYearsSemestersInfo();
     const timeSlotsInfo = this.helperService.getTimeSlots();
-    const breakPeriodTimeSlotIndex = this.helperService.getBreakPeriodTimeSlotIndex();
-    this.generateRoutineService.generateRoutines(breakPeriodTimeSlotIndex, daysInfo, timeSlotsInfo);
+    const breakPeriodTimeSlotIndex =
+      this.helperService.getBreakPeriodTimeSlotIndex();
+    this.generateRoutineService.generateRoutines(
+      breakPeriodTimeSlotIndex,
+      daysInfo,
+      timeSlotsInfo
+    );
     const bestRoutine = this.generateRoutineService.getBestRoutine();
     this.dialog.open(RoutineComponent, {
+      width: '90vw', // or your desired width
+      maxWidth: '90vw',
       data: {
+        universityName,
+        departmentName,
         daysInfo,
         yearsSemestersInfo,
         timeSlotsInfo,
