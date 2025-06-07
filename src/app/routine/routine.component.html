@@ -7,11 +7,86 @@
       <div class="day">Day</div>
       <div class="year border-top-right-bottom">Year</div>
       <div class="sem border-top-right-bottom">Sem.</div>
-      <div class="slot-box border-top-right-bottom" *ngFor="let timeSlot of timeSlotsInfo">
+      <div
+        class="slot-box border-top-right-bottom"
+        *ngFor="let timeSlot of timeSlotsInfo"
+      >
         {{ timeSlot }}
+      </div>
+    </div>
+    <div class="data">
+      <div class="day-info" *ngFor="let day of daysInfo; let dayIndex = index">
+        <div class="day-text border-left-bottom-right">{{ day }}</div>
+        <div class="year-info">
+          <div
+            class="year-item"
+            *ngFor="
+              let yearSemesterInfo of yearsSemestersInfo;
+              let yearIndex = index
+            "
+          >
+            <div class="year-text border-right-bottom">
+              {{ yearSemesterInfo.yearName }}
+            </div>
+            <div class="semester-info">
+              <div
+                class="semester-item"
+                *ngFor="
+                  let semesterName of yearSemesterInfo.semesterNames;
+                  let semesterIndex = index
+                "
+              >
+                <div class="semester-text border-right-bottom">
+                  {{ semesterName }}
+                </div>
+                <div class="slot-info">
+                  <ng-container
+                    *ngFor="
+                      let timeSlot of timeSlotsInfo;
+                      let timeSlotIndex = index
+                    "
+                  >
+                    <div
+                      *ngIf="
+                        selectedRoutine[dayIndex][yearIndex][semesterIndex][
+                          timeSlotIndex
+                        ].isFirstHour ||
+                        selectedRoutine[dayIndex][yearIndex][semesterIndex][
+                          timeSlotIndex
+                        ].isOccupied == false
+                      "
+                      class="slot-item border-right-bottom"
+                      [ngStyle]="getTimeSlotWidth(dayIndex, yearIndex, semesterIndex, timeSlotIndex)"
+                    >
+                      <div>
+                        {{
+                          selectedRoutine[dayIndex][yearIndex][semesterIndex][
+                            timeSlotIndex
+                          ].courseCode
+                        }}
+                      </div>
+                      <div class="teachers-text">
+                        {{
+                          selectedRoutine[dayIndex][yearIndex][semesterIndex][
+                            timeSlotIndex
+                          ].teachers
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          selectedRoutine[dayIndex][yearIndex][semesterIndex][
+                            timeSlotIndex
+                          ].roomNo
+                        }}
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-

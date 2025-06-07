@@ -1,54 +1,122 @@
 .container {
-  display: flex;
+  display: flex; /* Let it shrink-wrap its content horizontally */
   flex-direction: column;
-
-  .varsity-name,
-  .dept-name,
-  .class-routine-text {
-    text-align: center; // Center align text only
+  align-items: center; /* Horizontally center its children */
+  overflow-x: auto; /* Horizontal scroll if needed */
+  overflow-y: auto;
+  max-height: 90vh;
+  width: 100%; /* Full width of the parent container */
+  min-width: max-content; /* Make sure container expands to fit children horizontally */
+  .varsity-name {
+    font-size: 18px;
+    font-weight: 600;
   }
-
+  .dept-name {
+    font-weight: 600;
+  }
+  .class-routine-text {
+    font-weight: 600;
+  }
   .routine-container {
     display: flex;
     flex-direction: column;
-    overflow-x: auto; // Enable horizontal scrolling
-    width: 100%; // Let it take full page width
-
     .column-names {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      width: max-content; // Let it grow as wide as needed
-
+      .day,
+      .year,
+      .sem,
+      .slot-box {
+        display: flex;
+        justify-content: center;
+      }
       .day {
         width: 50px;
-        flex: 0 0 auto;
-        text-align: center;
         border: 1px solid gray;
       }
-
       .year {
         width: 50px;
-        flex: 0 0 auto;
-        text-align: center;
       }
-
       .sem {
-        width: 50px;
-        flex: 0 0 auto;
-        text-align: center;
-      }
-
-      .slot-box {
         width: 100px;
-        flex: 0 0 auto;
-        text-align: center;
       }
-
+      .slot-box {
+        width: 120px;
+      }
       .border-top-right-bottom {
         border-top: 1px solid gray;
         border-right: 1px solid gray;
         border-bottom: 1px solid gray;
+      }
+    }
+    .data {
+      display: flex;
+      flex-direction: column;
+      .day-info {
+        display: flex;
+        flex-direction: row;
+        .day-text {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+        }
+        .border-left-bottom-right {
+          border-left: 1px solid gray;
+          border-bottom: 1px solid gray;
+          border-right: 1px solid gray;
+        }
+        .year-info {
+          display: flex;
+          flex-direction: column;
+          .year-item {
+            display: flex;
+            flex-direction: row;
+            .year-text {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 50px;
+              min-height: 19px;
+              word-break: break-word;
+            }
+            .border-right-bottom {
+              border-bottom: 1px solid gray;
+              border-right: 1px solid gray;
+            }
+            .semester-info {
+              display: flex;
+              flex-direction: column;
+              .semester-item {
+                display: flex;
+                flex-direction: row;
+                .semester-text {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100px;
+                  min-height: 19px;
+                  word-break: break-word;
+                }
+                .slot-info {
+                  display: flex;
+                  flex-direction: row;
+                  .slot-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 120px;
+                    .teachers-text {
+                      word-break: break-word;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

@@ -17,7 +17,7 @@ export class RoutineComponent {
   daysInfo: string[] = [];
   yearsSemestersInfo: any[] = [];
   timeSlotsInfo: string[] = ['23', '33'];
-  bestRoutine: any;
+  selectedRoutine: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,10 +29,20 @@ export class RoutineComponent {
     this.daysInfo = data.daysInfo;
     this.yearsSemestersInfo = data.yearsSemestersInfo;
     this.timeSlotsInfo = data.timeSlotsInfo;
-    this.bestRoutine = data.bestRoutine;
+    this.selectedRoutine = data.bestRoutine;
+    debugger;
   }
 
-  ngOnInit(): void {
-    console.log("timeSlotsInfo:", this.timeSlotsInfo);
+  ngOnInit(): void {}
+  getTimeSlotWidth(
+    dayId: number,
+    yearId: number,
+    semesterId: number,
+    timeSlotId: number
+  ) {
+    let hourPerClass =
+      this.selectedRoutine[dayId][yearId][semesterId][timeSlotId].hourPerClass;
+    const width = hourPerClass * 120 + hourPerClass - 1;
+    return { width: `${width}px` };
   }
 }

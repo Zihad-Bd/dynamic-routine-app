@@ -302,6 +302,7 @@ export class GenerateRoutineService {
         this.routinesInfo[routineId][dayId][yearId][semesterId][j].isFirstHour =
           true;
       }
+      this.routinesInfo[routineId][dayId][yearId][semesterId][j].hourPerClass = courseInfo.hoursPerClass;
       for (let k = 0; k < teachers.length; ++k) {
         const str = `${dayId}_${j}_${teachers[k].abbreviation}`;
         haveClassForTeacherMap.set(str, true);
@@ -321,6 +322,7 @@ export class GenerateRoutineService {
             this.routinesInfo[routineId][j][k][l][m].teachers = '';
             this.routinesInfo[routineId][j][k][l][m].isOccupied = false;
             this.routinesInfo[routineId][j][k][l][m].isFirstHour = false;
+            this.routinesInfo[routineId][j][k][l][m].hourPerClass = 1;
           }
         }
       }
