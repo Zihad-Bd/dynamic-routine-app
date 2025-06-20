@@ -8,10 +8,36 @@ export class HelperService {
   startTimeNum: number = 0;
   endTimeNum: number = 0;
   breakPeriodStartTimeNum: number = 0;
+  codeHourPerClassMap: Map<string, number> = new Map();
+  codeCourseTypeMap: Map<string, string> = new Map();
   constructor() {}
 
   storeFinalData(finalData: any) {
     this.finalData = finalData;
+    this.initCourseCodeMaps();
+  }
+
+  initCourseCodeMaps() {
+    console.log(this.finalData);
+    for (let i = 0; i < this.finalData.years.length; i++) {
+      const year = this.finalData.years[i];
+      for (let j = 0; j < year.coursesBySemester.length; j++) {
+        const semester = year.coursesBySemester[j];
+        for (let k = 0; k < semester.courses.length; k++) {
+          const course = semester.courses[k];
+          this.codeHourPerClassMap.set(course.courseCode, course.hoursPerClass);
+          this.codeCourseTypeMap.set(course.courseCode, course.courseType);
+        }
+      }
+    }
+  }
+
+  getCodeHourPerClassMap() {
+    return this.codeHourPerClassMap;
+  }
+  
+  getCodeCourseTypeMap() {
+    return this.codeCourseTypeMap;
   }
 
   getFinalData() {

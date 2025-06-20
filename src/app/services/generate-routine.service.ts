@@ -1,3 +1,4 @@
+import { FindFitnessService } from './find-fitness.service';
 import { HelperService } from './helper.service';
 import { Injectable } from '@angular/core';
 
@@ -10,7 +11,8 @@ export class GenerateRoutineService {
   numberOfDays: number = 0;
   numberOfTimeSlots: number = 0;
   finalData: any;
-  constructor(private helperService: HelperService) {}
+  routineIdFitness: [number, number][] = [];
+  constructor(private helperService: HelperService, private findFitnessService: FindFitnessService) {}
 
   generateRoutines(
     breakPeriodTimeSlotIndex: number,
@@ -52,9 +54,7 @@ export class GenerateRoutineService {
       }
     }
     this.generateInitialRoutines();
-    // this.routinesInfo[0][0][0][0][0].courseCode = this.finalData.years[0].coursesBySemester[0].courses[0].rooms[0];
-    // this.routinesInfo[0][0][0][0][0].teachers = ["ab", "cd"];
-    // this.routinesInfo[0][0][0][0][0].roomNo = [302];
+    this.findInitialRoutineFitness();
   }
 
   generateInitialRoutines() {
@@ -326,6 +326,19 @@ export class GenerateRoutineService {
           }
         }
       }
+    }
+  }
+
+  initializeRoutineFitness(): void {
+    this.routineIdFitness = Array.from({ length: 200 }, () => [0, 0]);
+  }
+
+  findInitialRoutineFitness() {
+    this.initializeRoutineFitness();
+    this.findFitnessService.setRequiredData();
+    for (let i = 0; i < 100; ++i) {
+      this.routineIdFitness[i][0] = i;
+      this.routineIdFitness[i][1] = this.findFitnessService.findFitness(this.routinesInfo[i]);
     }
   }
 

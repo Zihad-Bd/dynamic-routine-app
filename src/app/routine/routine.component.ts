@@ -30,7 +30,6 @@ export class RoutineComponent {
     this.yearsSemestersInfo = data.yearsSemestersInfo;
     this.timeSlotsInfo = data.timeSlotsInfo;
     this.selectedRoutine = data.bestRoutine;
-    debugger;
   }
 
   ngOnInit(): void {}
