@@ -10,11 +10,33 @@ export class HelperService {
   breakPeriodStartTimeNum: number = 0;
   codeHourPerClassMap: Map<string, number> = new Map();
   codeCourseTypeMap: Map<string, string> = new Map();
+  totalClassHourForStudents: any;
   constructor() {}
 
   storeFinalData(finalData: any) {
     this.finalData = finalData;
+    this.findTotalClassHourForStudents();
     this.initCourseCodeMaps();
+  }
+
+  findTotalClassHourForStudents() {
+    this.totalClassHourForStudents = Array.from({ length: 8 }, () =>
+      Array.from({ length: 6 }, () => 0)
+    );
+    for (let i = 0; i < this.finalData.years.length; i++) {
+      const year = this.finalData.years[i];
+      for (let j = 0; j < year.coursesBySemester.length; j++) {
+        const semester = year.coursesBySemester[j];
+        for (let k = 0; k < semester.courses.length; k++) {
+          const course = semester.courses[k];
+          this.totalClassHourForStudents[i][j] += course.hoursPerClass * course.totalClassesPerWeek;
+        }
+      }
+    }
+  }
+
+  getTotalClassHourForStudents() {
+    return this.totalClassHourForStudents;
   }
 
   initCourseCodeMaps() {

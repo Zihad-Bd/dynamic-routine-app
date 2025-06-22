@@ -12,7 +12,10 @@ export class GenerateRoutineService {
   numberOfTimeSlots: number = 0;
   finalData: any;
   routineIdFitness: [number, number][] = [];
-  constructor(private helperService: HelperService, private findFitnessService: FindFitnessService) {}
+  constructor(
+    private helperService: HelperService,
+    private findFitnessService: FindFitnessService
+  ) {}
 
   generateRoutines(
     breakPeriodTimeSlotIndex: number,
@@ -172,8 +175,7 @@ export class GenerateRoutineService {
                 break;
               }
             }
-            if (selectedRoom == "")
-              isInsertable = false;
+            if (selectedRoom == '') isInsertable = false;
           }
         }
         if (isInsertable) {
@@ -292,6 +294,8 @@ export class GenerateRoutineService {
     for (let j = timeSlotId; j <= timeSlotId + hoursPerClass - 1; ++j) {
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].courseCode =
         courseInfo.courseCode;
+      this.routinesInfo[routineId][dayId][yearId][semesterId][j].courseType =
+        courseInfo.courseType;
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].roomNo =
         roomNo;
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].teachers =
@@ -302,7 +306,8 @@ export class GenerateRoutineService {
         this.routinesInfo[routineId][dayId][yearId][semesterId][j].isFirstHour =
           true;
       }
-      this.routinesInfo[routineId][dayId][yearId][semesterId][j].hourPerClass = courseInfo.hoursPerClass;
+      this.routinesInfo[routineId][dayId][yearId][semesterId][j].hourPerClass =
+        courseInfo.hoursPerClass;
       for (let k = 0; k < teachers.length; ++k) {
         const str = `${dayId}_${j}_${teachers[k].abbreviation}`;
         haveClassForTeacherMap.set(str, true);
@@ -318,6 +323,7 @@ export class GenerateRoutineService {
         for (let l = 0; l < 6; ++l) {
           for (let m = 0; m < 20; ++m) {
             this.routinesInfo[routineId][j][k][l][m].courseCode = '';
+            this.routinesInfo[routineId][j][k][l][m].courseType = '';
             this.routinesInfo[routineId][j][k][l][m].roomNo = '';
             this.routinesInfo[routineId][j][k][l][m].teachers = '';
             this.routinesInfo[routineId][j][k][l][m].isOccupied = false;
@@ -338,7 +344,9 @@ export class GenerateRoutineService {
     this.findFitnessService.setRequiredData();
     for (let i = 0; i < 100; ++i) {
       this.routineIdFitness[i][0] = i;
-      this.routineIdFitness[i][1] = this.findFitnessService.findFitness(this.routinesInfo[i]);
+      this.routineIdFitness[i][1] = this.findFitnessService.findFitness(
+        this.routinesInfo[i]
+      );
     }
   }
 
