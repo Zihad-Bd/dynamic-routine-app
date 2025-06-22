@@ -12,6 +12,7 @@ export class FindFitnessService {
   codeHourPerClassMap: Map<string, number> = new Map();
   codeCourseTypeMap: Map<string, string> = new Map();
   totalClassHourForStudents: any;
+  totalClassHourForTeachers: Map<string, number> = new Map();
   constructor(private helperService: HelperService) {}
 
   setRequiredData(): void {
@@ -29,6 +30,7 @@ export class FindFitnessService {
     unfitness += this.findUnfitnessForConsequtiveClassOfATeacher();
     unfitness += this.findUnfitnessForConsequtiveClassOfStudents();
     unfitness += this.findUnfitnessForUnusualClassOfStudents();
+    unfitness += this.findUnfitnessForUnusualClassOfTeachers();
     return 1e8 - unfitness;
   }
 
@@ -168,11 +170,61 @@ export class FindFitnessService {
               totalClassHourInADay++;
             }
           }
-          const optimalAverageClassHourPerDay = Math.round(this.totalClassHourForStudents[j][k] / this.numOfWorkDay);
-          const difference = Math.abs(totalClassHourInADay - optimalAverageClassHourPerDay);
+          const optimalAverageClassHourPerDay = Math.round(
+            this.totalClassHourForStudents[j][k] / this.numOfWorkDay
+          );
+          const difference = Math.abs(
+            totalClassHourInADay - optimalAverageClassHourPerDay
+          );
           if (difference > 1) {
             unfitness += (difference - 1) * 40;
           }
+        }
+      }
+    }
+    return unfitness;
+  }
+
+  findUnfitnessForUnusualClassOfTeachers(): number {
+    this.totalClassHourForTeachers =
+      this.helperService.getTotalClassHourForTeachers();
+    let unfitness = 0;
+    for (let i = 0; i < this.numOfWorkDay; ++i) {
+      let totalClassHourInADay: Map<string, number> = new Map();
+      for (let j = 0; j < this.yearsSemestersInfo.length; ++j) {
+        let numOfSemester = this.yearsSemestersInfo[j].semesterNames.length;
+        for (let k = 0; k < numOfSemester; ++k) {
+          for (let l = 0; l < this.numberOfTimeSlot; ++l) {
+            if (this.routineInfo[i][j][k][l].isOccupied == true) {
+              let teacherList: string[] = [];
+              if (this.routineInfo[i][j][k][l].courseType == 'lab') {
+                teacherList = this.routineInfo[i][j][k][l].teachers
+                  .split(',')
+                  .map((s: string) => s.trim());
+              } else {
+                teacherList = this.routineInfo[i][j][k][l].teachers
+                  .split('/')
+                  .map((s: string) => s.trim());
+              }
+              for (let teacher of teacherList) {
+                if (teacher != '') {
+                  totalClassHourInADay.set(
+                    teacher,
+                    (totalClassHourInADay.get(teacher) || 0) + 1
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+      for (const [teacher, value] of totalClassHourInADay) {
+        const optimalAverageClassHourPerDay = Math.round(
+          (this.totalClassHourForTeachers.get(teacher) || 0) / this.numOfWorkDay
+        );
+        const difference = Math.abs(value - optimalAverageClassHourPerDay);
+        if (difference > 1) {
+          unfitness += (difference - 1) * 50;
         }
       }
     }

@@ -11,11 +11,13 @@ export class HelperService {
   codeHourPerClassMap: Map<string, number> = new Map();
   codeCourseTypeMap: Map<string, string> = new Map();
   totalClassHourForStudents: any;
+  totalClassHourForTeachers: Map<string, number> = new Map();
   constructor() {}
 
   storeFinalData(finalData: any) {
     this.finalData = finalData;
     this.findTotalClassHourForStudents();
+    this.findTotalClassHourForTeachers();
     this.initCourseCodeMaps();
   }
 
@@ -29,7 +31,8 @@ export class HelperService {
         const semester = year.coursesBySemester[j];
         for (let k = 0; k < semester.courses.length; k++) {
           const course = semester.courses[k];
-          this.totalClassHourForStudents[i][j] += course.hoursPerClass * course.totalClassesPerWeek;
+          this.totalClassHourForStudents[i][j] +=
+            course.hoursPerClass * course.totalClassesPerWeek;
         }
       }
     }
@@ -37,6 +40,27 @@ export class HelperService {
 
   getTotalClassHourForStudents() {
     return this.totalClassHourForStudents;
+  }
+
+  findTotalClassHourForTeachers() {
+    this.totalClassHourForTeachers.clear();
+    for (let i = 0; i < this.finalData.years.length; i++) {
+      const year = this.finalData.years[i];
+      for (let j = 0; j < year.coursesBySemester.length; j++) {
+        const semester = year.coursesBySemester[j];
+        for (let k = 0; k < semester.courses.length; k++) {
+          const course = semester.courses[k];
+          const teachers = course.teachers;
+          for (let teacher of teachers) {
+             this.totalClassHourForTeachers.set(teacher.abbreviation, (this.totalClassHourForTeachers.get(teacher.abbreviation) || 0) + course.hoursPerClass * course.totalClassesPerWeek);
+          }
+        }
+      }
+    }
+  }
+
+  getTotalClassHourForTeachers() {
+    return this.totalClassHourForTeachers;
   }
 
   initCourseCodeMaps() {
@@ -57,7 +81,7 @@ export class HelperService {
   getCodeHourPerClassMap() {
     return this.codeHourPerClassMap;
   }
-  
+
   getCodeCourseTypeMap() {
     return this.codeCourseTypeMap;
   }
