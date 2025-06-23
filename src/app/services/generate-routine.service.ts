@@ -26,7 +26,7 @@ export class GenerateRoutineService {
     this.breakPeriodTimeSlotIndex = breakPeriodTimeSlotIndex;
     this.numberOfDays = daysInfo.length;
     this.numberOfTimeSlots = timeSlotsInfo.length;
-    this.routinesInfo = Array.from({ length: 2000 }, () =>
+    this.routinesInfo = Array.from({ length: 4000 }, () =>
       Array.from({ length: 7 }, () =>
         Array.from({ length: 8 }, () =>
           Array.from(
@@ -36,7 +36,7 @@ export class GenerateRoutineService {
         )
       )
     );
-    for (let i = 0; i < 2000; ++i) {
+    for (let i = 0; i < 4000; ++i) {
       this.clearRoutine(i);
     }
     this.finalData = this.helperService.getFinalData();
@@ -64,7 +64,7 @@ export class GenerateRoutineService {
   }
 
   generateInitialRoutines() {
-    for (let routineId = 0; routineId < 1000; ++routineId) {
+    for (let routineId = 0; routineId < 2000; ++routineId) {
       const haveClassForTeacherMap = new Map<string, boolean>();
       const haveRoomMap = new Map<string, boolean>();
       let possible: boolean = this.checkInsertionPossibility(
@@ -330,9 +330,9 @@ export class GenerateRoutineService {
   findInitialRoutineFitness() {
     this.initializeRoutineFitness();
     this.findFitnessService.setRequiredData();
-    for (let i = 0; i < 2000; ++i) {
+    for (let i = 0; i < 4000; ++i) {
       this.routineIdFitness[i][0] = i;
-      if (i < 1000) {
+      if (i < 2000) {
         this.routineIdFitness[i][1] = this.findFitnessService.findFitness(
           this.routinesInfo[i]
         );
@@ -341,26 +341,26 @@ export class GenerateRoutineService {
   }
 
   initializeRoutineFitness(): void {
-    this.routineIdFitness = Array.from({ length: 2000 }, () => [0, 0]);
+    this.routineIdFitness = Array.from({ length: 4000 }, () => [0, 0]);
   }
 
   initializeRoutineExistMap() {
-    for (let i = 0; i < 1000; ++i) {
+    for (let i = 0; i < 2000; ++i) {
       this.isValidRoutineExistMp.set(i, true);
     }
-    for (let i = 1000; i < 2000; ++i) {
+    for (let i = 2000; i < 4000; ++i) {
       this.isValidRoutineExistMp.set(i, false);
     }
   }
 
   applyCrossover() {
-    for (let i = 0; i < 20; ++i) {
+    for (let i = 0; i < 50; ++i) {
       console.log(this.routineIdFitness[0][1]);
-      for (let j = 0; j < 9; j += 2) {
+      for (let j = 0; j < 1999; j += 2) {
         let parent1Id = this.routineIdFitness[j][0];
-        let parent2Id = this.routineIdFitness[j + 1][0];
-        let child1Id = this.routineIdFitness[j + 1000][0];
-        let child2Id = this.routineIdFitness[j + 1001][0];
+        let parent2Id = this.routineIdFitness[1999 - j][0];
+        let child1Id = this.routineIdFitness[j + 2000][0];
+        let child2Id = this.routineIdFitness[j + 2001][0];
         const yearId = this.getRandomInteger(
           0,
           this.finalData.years.length - 1
@@ -418,7 +418,7 @@ export class GenerateRoutineService {
           semesterId
         );
       }
-      for (let i = 1000; i < 2000; ++i) {
+      for (let i = 2000; i < 4000; ++i) {
         if (this.isValidRoutineExistMp.get(this.routineIdFitness[i][0]) == true) {
           this.routineIdFitness[i][1] = this.findFitnessService.findFitness(this.routinesInfo[this.routineIdFitness[i][0]]);
         } else {
