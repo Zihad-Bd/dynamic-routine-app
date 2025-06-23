@@ -1,9 +1,8 @@
-import { GenerateRoutineService } from './../services/generate-routine.service';
-import { Component, OnInit } from '@angular/core';
-import { HelperService } from '../services/helper.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HelperService } from '../services/helper.service';
+import { GenerateRoutineService } from './../services/generate-routine.service';
 
 @Component({
   selector: 'app-routine',
@@ -39,9 +38,9 @@ export class RoutineComponent {
     semesterId: number,
     timeSlotId: number
   ) {
-    let hourPerClass =
-      this.selectedRoutine[dayId][yearId][semesterId][timeSlotId].hourPerClass;
-    const width = hourPerClass * 120 + hourPerClass - 1;
+    let hoursPerClass =
+      this.selectedRoutine[dayId][yearId][semesterId][timeSlotId].hoursPerClass;
+    const width = hoursPerClass * 120 + hoursPerClass - 1;
     return { width: `${width}px` };
   }
 }

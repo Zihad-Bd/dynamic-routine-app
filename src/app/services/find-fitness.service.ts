@@ -48,11 +48,11 @@ export class FindFitnessService {
             }
           }
           for (const [key, value] of mp.entries()) {
-            const hourPerClass = this.codeHourPerClassMap.get(key);
+            const hoursPerClass = this.codeHourPerClassMap.get(key);
             const courseType = this.codeCourseTypeMap.get(key);
             let cnt: number = 0;
-            if (hourPerClass !== undefined) {
-              cnt = value / hourPerClass;
+            if (hoursPerClass !== undefined) {
+              cnt = value / hoursPerClass;
             }
             if (cnt > 1) {
               if (courseType == 'lab') {
@@ -77,19 +77,11 @@ export class FindFitnessService {
         for (let k = 0; k < numOfSemester; ++k) {
           for (let l = 0; l < this.numberOfTimeSlot; ++l) {
             if (this.routineInfo[i][j][k][l].isFirstHour == true) {
-              let teacherList: string[] = [];
-              if (this.routineInfo[i][j][k][l].courseType == 'lab') {
-                teacherList = this.routineInfo[i][j][k][l].teachers
-                  .split(',')
-                  .map((s: string) => s.trim());
-              } else {
-                teacherList = this.routineInfo[i][j][k][l].teachers
-                  .split('/')
-                  .map((s: string) => s.trim());
-              }
-              for (const teacher of teacherList) {
+              let teachers = this.routineInfo[i][j][k][l].teachers;
+              for (let teacher of teachers) {
+                teacher = teacher.abbreviation;
                 if (teacher != '') {
-                  const r = l + this.routineInfo[i][j][k][l].hourPerClass - 1;
+                  const r = l + this.routineInfo[i][j][k][l].hoursPerClass - 1;
                   const pair: [number, number] = [l, r];
                   if (!mp.has(teacher)) {
                     mp.set(teacher, []);
@@ -132,7 +124,7 @@ export class FindFitnessService {
           let pairs: [number, number][] = [];
           for (let l = 0; l < this.numberOfTimeSlot; ++l) {
             if (this.routineInfo[i][j][k][l].isFirstHour == true) {
-              const r = l + this.routineInfo[i][j][k][l].hourPerClass - 1;
+              const r = l + this.routineInfo[i][j][k][l].hoursPerClass - 1;
               pairs.push([l, r]);
             }
           }
@@ -196,17 +188,9 @@ export class FindFitnessService {
         for (let k = 0; k < numOfSemester; ++k) {
           for (let l = 0; l < this.numberOfTimeSlot; ++l) {
             if (this.routineInfo[i][j][k][l].isOccupied == true) {
-              let teacherList: string[] = [];
-              if (this.routineInfo[i][j][k][l].courseType == 'lab') {
-                teacherList = this.routineInfo[i][j][k][l].teachers
-                  .split(',')
-                  .map((s: string) => s.trim());
-              } else {
-                teacherList = this.routineInfo[i][j][k][l].teachers
-                  .split('/')
-                  .map((s: string) => s.trim());
-              }
-              for (let teacher of teacherList) {
+              let teachers = this.routineInfo[i][j][k][l].teachers;
+              for (let teacher of teachers) {
+                teacher = teacher.abbreviation;
                 if (teacher != '') {
                   totalClassHourInADay.set(
                     teacher,

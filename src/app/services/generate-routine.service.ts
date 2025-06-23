@@ -1,6 +1,6 @@
+import { Injectable } from '@angular/core';
 import { FindFitnessService } from './find-fitness.service';
 import { HelperService } from './helper.service';
-import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,7 @@ export class GenerateRoutineService {
   numberOfTimeSlots: number = 0;
   finalData: any;
   routineIdFitness: [number, number][] = [];
+  isValidRoutineExistMp: Map<number, boolean> = new Map();
   constructor(
     private helperService: HelperService,
     private findFitnessService: FindFitnessService
@@ -25,7 +26,7 @@ export class GenerateRoutineService {
     this.breakPeriodTimeSlotIndex = breakPeriodTimeSlotIndex;
     this.numberOfDays = daysInfo.length;
     this.numberOfTimeSlots = timeSlotsInfo.length;
-    this.routinesInfo = Array.from({ length: 200 }, () =>
+    this.routinesInfo = Array.from({ length: 2000 }, () =>
       Array.from({ length: 7 }, () =>
         Array.from({ length: 8 }, () =>
           Array.from(
@@ -35,7 +36,7 @@ export class GenerateRoutineService {
         )
       )
     );
-    for (let i = 0; i < 200; ++i) {
+    for (let i = 0; i < 2000; ++i) {
       this.clearRoutine(i);
     }
     this.finalData = this.helperService.getFinalData();
@@ -58,10 +59,12 @@ export class GenerateRoutineService {
     }
     this.generateInitialRoutines();
     this.findInitialRoutineFitness();
+    this.initializeRoutineExistMap();
+    this.applyCrossover();
   }
 
   generateInitialRoutines() {
-    for (let routineId = 0; routineId < 100; ++routineId) {
+    for (let routineId = 0; routineId < 1000; ++routineId) {
       const haveClassForTeacherMap = new Map<string, boolean>();
       const haveRoomMap = new Map<string, boolean>();
       let possible: boolean = this.checkInsertionPossibility(
@@ -280,17 +283,6 @@ export class GenerateRoutineService {
     haveRoomMap: Map<string, boolean>,
     roomNo: string
   ) {
-    let teachersConcat = '';
-    for (let k = 0; k < teachers.length; ++k) {
-      if (k > 0) {
-        if (courseInfo.courseType == 'lab') {
-          teachersConcat += ',';
-        } else {
-          teachersConcat += '/';
-        }
-      }
-      teachersConcat += teachers[k].abbreviation;
-    }
     for (let j = timeSlotId; j <= timeSlotId + hoursPerClass - 1; ++j) {
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].courseCode =
         courseInfo.courseCode;
@@ -299,14 +291,14 @@ export class GenerateRoutineService {
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].roomNo =
         roomNo;
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].teachers =
-        teachersConcat;
+        teachers;
       this.routinesInfo[routineId][dayId][yearId][semesterId][j].isOccupied =
         true;
       if (j == timeSlotId) {
         this.routinesInfo[routineId][dayId][yearId][semesterId][j].isFirstHour =
           true;
       }
-      this.routinesInfo[routineId][dayId][yearId][semesterId][j].hourPerClass =
+      this.routinesInfo[routineId][dayId][yearId][semesterId][j].hoursPerClass =
         courseInfo.hoursPerClass;
       for (let k = 0; k < teachers.length; ++k) {
         const str = `${dayId}_${j}_${teachers[k].abbreviation}`;
@@ -325,29 +317,239 @@ export class GenerateRoutineService {
             this.routinesInfo[routineId][j][k][l][m].courseCode = '';
             this.routinesInfo[routineId][j][k][l][m].courseType = '';
             this.routinesInfo[routineId][j][k][l][m].roomNo = '';
-            this.routinesInfo[routineId][j][k][l][m].teachers = '';
+            this.routinesInfo[routineId][j][k][l][m].teachers = [];
             this.routinesInfo[routineId][j][k][l][m].isOccupied = false;
             this.routinesInfo[routineId][j][k][l][m].isFirstHour = false;
-            this.routinesInfo[routineId][j][k][l][m].hourPerClass = 1;
+            this.routinesInfo[routineId][j][k][l][m].hoursPerClass = 1;
           }
         }
       }
     }
   }
 
-  initializeRoutineFitness(): void {
-    this.routineIdFitness = Array.from({ length: 200 }, () => [0, 0]);
-  }
-
   findInitialRoutineFitness() {
     this.initializeRoutineFitness();
     this.findFitnessService.setRequiredData();
-    for (let i = 0; i < 100; ++i) {
+    for (let i = 0; i < 2000; ++i) {
       this.routineIdFitness[i][0] = i;
-      this.routineIdFitness[i][1] = this.findFitnessService.findFitness(
-        this.routinesInfo[i]
-      );
+      if (i < 1000) {
+        this.routineIdFitness[i][1] = this.findFitnessService.findFitness(
+          this.routinesInfo[i]
+        );
+      }
     }
+  }
+
+  initializeRoutineFitness(): void {
+    this.routineIdFitness = Array.from({ length: 2000 }, () => [0, 0]);
+  }
+
+  initializeRoutineExistMap() {
+    for (let i = 0; i < 1000; ++i) {
+      this.isValidRoutineExistMp.set(i, true);
+    }
+    for (let i = 1000; i < 2000; ++i) {
+      this.isValidRoutineExistMp.set(i, false);
+    }
+  }
+
+  applyCrossover() {
+    for (let i = 0; i < 20; ++i) {
+      console.log(this.routineIdFitness[0][1]);
+      for (let j = 0; j < 9; j += 2) {
+        let parent1Id = this.routineIdFitness[j][0];
+        let parent2Id = this.routineIdFitness[j + 1][0];
+        let child1Id = this.routineIdFitness[j + 1000][0];
+        let child2Id = this.routineIdFitness[j + 1001][0];
+        const yearId = this.getRandomInteger(
+          0,
+          this.finalData.years.length - 1
+        );
+        const semesterId = this.getRandomInteger(
+          0,
+          this.finalData.years[yearId].coursesBySemester.length - 1
+        );
+        const courseId = this.getRandomInteger(
+          0,
+          this.finalData.years[yearId].coursesBySemester[semesterId].courses
+            .length - 1
+        );
+        const courseInfo =
+          this.finalData.years[yearId].coursesBySemester[semesterId].courses[
+            courseId
+          ];
+        let daySlotTimeSlotRoomNo: [number, number, string][] = [];
+        for (let k = 0; k < this.numberOfDays; ++k) {
+          for (let l = 0; l < this.numberOfTimeSlots; ++l) {
+            const info = this.routinesInfo[parent1Id][k][yearId][semesterId][l];
+            if (
+              info.courseCode == courseInfo.courseCode &&
+              info.isFirstHour == true
+            ) {
+              daySlotTimeSlotRoomNo.push([k, l, info.roomNo]);
+            }
+          }
+        }
+        for (let k = 0; k < this.numberOfDays; ++k) {
+          for (let l = 0; l < this.numberOfTimeSlots; ++l) {
+            const info = this.routinesInfo[parent2Id][k][yearId][semesterId][l];
+            if (
+              info.courseCode == courseInfo.courseCode &&
+              info.isFirstHour == true
+            ) {
+              daySlotTimeSlotRoomNo.push([k, l, info.roomNo]);
+            }
+          }
+        }
+        this.tryToGenerateChild(
+          parent1Id,
+          child1Id,
+          courseInfo,
+          daySlotTimeSlotRoomNo,
+          yearId,
+          semesterId
+        );
+        this.tryToGenerateChild(
+          parent2Id,
+          child2Id,
+          courseInfo,
+          daySlotTimeSlotRoomNo,
+          yearId,
+          semesterId
+        );
+      }
+      for (let i = 1000; i < 2000; ++i) {
+        if (this.isValidRoutineExistMp.get(this.routineIdFitness[i][0]) == true) {
+          this.routineIdFitness[i][1] = this.findFitnessService.findFitness(this.routinesInfo[this.routineIdFitness[i][0]]);
+        } else {
+          this.routineIdFitness[i][1] = 0;
+        }
+      }
+      this.routineIdFitness.sort((a, b) => b[1] - a[1]);
+    }
+  }
+
+  tryToGenerateChild(
+    parentId: number,
+    childId: number,
+    courseInfo: any,
+    daySlotTimeSlotRoomNo: any,
+    yearId: number,
+    semesterId: number
+  ) {
+    this.clearRoutine(childId);
+    const haveClassForTeacherMap = new Map<string, boolean>();
+    const haveRoomMap = new Map<string, boolean>();
+    for (let i = 0; i < this.numberOfDays; ++i) {
+      for (let j = 0; j < this.finalData.years.length; j++) {
+        const year = this.finalData.years[j];
+        for (let k = 0; k < year.coursesBySemester.length; k++) {
+          for (let l = 0; l < this.numberOfTimeSlots; ++l) {
+            const info = this.routinesInfo[parentId][i][j][k][l];
+            if (
+              info.isFirstHour == true &&
+              courseInfo.courseCode != info.courseCode
+            ) {
+              const teachers = info.teachers;
+              this.insertDataIntoRoutine(
+                childId,
+                i,
+                j,
+                k,
+                l,
+                info.hoursPerClass,
+                info,
+                teachers,
+                haveClassForTeacherMap,
+                haveRoomMap,
+                info.roomNo
+              );
+            }
+          }
+        }
+      }
+    }
+    const hoursPerClass = courseInfo.hoursPerClass;
+    const teachers = courseInfo.teachers;
+    for (let i = 0; i < 50; ++i) {
+      let indices: number[] = [];
+      for (let i = 0; i < daySlotTimeSlotRoomNo.length / 2; ++i) {
+        const index = this.getRandomInteger(
+          0,
+          daySlotTimeSlotRoomNo.length - 1
+        );
+        indices.push(index);
+      }
+      const unique = new Set(indices);
+      if (unique.size !== indices.length) {
+        continue;
+      }
+      const daySlotTimeSlotMap = new Map<string, boolean>();
+      let isInsertable: boolean = true;
+      for (let index of indices) {
+        const key = `${daySlotTimeSlotRoomNo[index][0]}_${daySlotTimeSlotRoomNo[index][1]}`;
+        if (daySlotTimeSlotMap.has(key)) {
+          isInsertable = false;
+          break;
+        }
+        daySlotTimeSlotMap.set(key, false);
+      }
+      if (!isInsertable) {
+        continue;
+      }
+      for (let index of indices) {
+        isInsertable = this.isSlotsFreeForStudent(
+          childId,
+          daySlotTimeSlotRoomNo[index][0],
+          yearId,
+          semesterId,
+          daySlotTimeSlotRoomNo[index][1],
+          hoursPerClass
+        );
+        if (!isInsertable) {
+          break;
+        }
+        isInsertable = this.isSlotsFreeForTeacher(
+          daySlotTimeSlotRoomNo[index][0],
+          daySlotTimeSlotRoomNo[index][1],
+          hoursPerClass,
+          teachers,
+          haveClassForTeacherMap
+        );
+        if (!isInsertable) {
+          break;
+        }
+        const roomNo = daySlotTimeSlotRoomNo[index][2];
+        isInsertable = this.isSlotsFreeForRoom(
+          daySlotTimeSlotRoomNo[index][0],
+          daySlotTimeSlotRoomNo[index][1],
+          hoursPerClass,
+          haveRoomMap,
+          roomNo
+        );
+      }
+      if (!isInsertable) {
+        continue;
+      }
+      for (let index of indices) {
+        this.insertDataIntoRoutine(
+          childId,
+          daySlotTimeSlotRoomNo[index][0],
+          yearId,
+          semesterId,
+          daySlotTimeSlotRoomNo[index][1],
+          hoursPerClass,
+          courseInfo,
+          teachers,
+          haveClassForTeacherMap,
+          haveRoomMap,
+          daySlotTimeSlotRoomNo[index][2]
+        );
+      }
+      this.isValidRoutineExistMp.set(childId, true);
+      return;
+    }
+    this.isValidRoutineExistMp.set(childId, false);
   }
 
   getRandomInteger(start: number, end: number): number {
@@ -355,7 +557,34 @@ export class GenerateRoutineService {
   }
 
   getBestRoutine() {
-    console.log(this.routinesInfo);
-    return this.routinesInfo[0];
+    this.teacherConcat(this.routineIdFitness[0][0]);
+    return this.routinesInfo[this.routineIdFitness[0][0]];
+  }
+
+  teacherConcat(routineId: number) {
+    for (let i = 0; i < this.numberOfDays; ++i) {
+      for (let j = 0; j < this.finalData.years.length; j++) {
+        const year = this.finalData.years[j];
+        for (let k = 0; k < year.coursesBySemester.length; k++) {
+          for (let l = 0; l < this.numberOfTimeSlots; ++l) {
+            const teachers = this.routinesInfo[routineId][i][j][k][l].teachers;
+            const courseType =
+              this.routinesInfo[routineId][i][j][k][l].courseType;
+            let teachersConcat = '';
+            for (let k = 0; k < teachers.length; ++k) {
+              if (k > 0) {
+                if (courseType == 'lab') {
+                  teachersConcat += ',';
+                } else {
+                  teachersConcat += '/';
+                }
+              }
+              teachersConcat += teachers[k].abbreviation;
+            }
+            this.routinesInfo[routineId][i][j][k][l].teachers = teachersConcat;
+          }
+        }
+      }
+    }
   }
 }
