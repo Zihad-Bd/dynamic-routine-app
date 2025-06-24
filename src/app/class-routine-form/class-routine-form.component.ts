@@ -307,9 +307,9 @@ export class ClassRoutineFormComponent implements OnInit {
     this.isLoading = true;
     setTimeout(() => {
       //console.log(this.routineForm.value);
-      //this.finalData = this.routineForm.value;
+      this.finalData = this.routineForm.value;
       // Use the below data for debugging purpose
-      this.finalData = this.manualDataProviderService.getManualData();
+      //this.finalData = this.manualDataProviderService.getManualData();
       this.helperService.storeFinalData(this.finalData);
       const universityName = this.finalData.universityName;
       const departmentName = this.finalData.departmentName;
