@@ -1,3 +1,12 @@
+<div *ngIf="isLoading" class="custom-loader-overlay">
+  <div class="custom-loader-box">
+    <div class="custom-loader"></div>
+    <div class="loading-text">
+      Generating your routine. This may take a few moments...
+    </div>
+  </div>
+</div>
+
 <div class="outlay">
   <form [formGroup]="routineForm">
     <div class="container">
@@ -445,7 +454,8 @@
             </div>
           </div>
         </div>
-        <button
+        <button [disabled]="routineForm.invalid"
+          class="submit-btn"
           mat-raised-button
           color="primary"
           type="submit"

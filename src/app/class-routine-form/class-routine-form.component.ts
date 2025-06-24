@@ -36,6 +36,7 @@ import { RoutineComponent } from '../routine/routine.component';
   styleUrls: ['./class-routine-form.component.scss'],
 })
 export class ClassRoutineFormComponent implements OnInit {
+  isLoading: boolean = false;
   routineForm!: FormGroup;
 
   workingDays = [
@@ -116,8 +117,8 @@ export class ClassRoutineFormComponent implements OnInit {
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       breakPeriod: ['', Validators.required],
-      numberOfTeachers: ['', [Validators.required, Validators.min(1)]],
-      teachers: this.fb.array([]),
+      // numberOfTeachers: ['', [Validators.required, Validators.min(1)]],
+      // teachers: this.fb.array([]),
       numberOfYears: ['', [Validators.required, Validators.min(1)]],
       years: this.fb.array([]),
     });
@@ -303,35 +304,39 @@ export class ClassRoutineFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //console.log(this.routineForm.value);
-    //this.finalData = this.routineForm.value;
-    // Use the below data for debugging purpose
-    this.finalData = this.manualDataProviderService.getManualData();
-    this.helperService.storeFinalData(this.finalData);
-    const universityName = this.finalData.universityName;
-    const departmentName = this.finalData.departmentName;
-    const daysInfo = this.helperService.getDaysInfo();
-    const yearsSemestersInfo = this.helperService.getYearsSemestersInfo();
-    const timeSlotsInfo = this.helperService.getTimeSlots();
-    const breakPeriodTimeSlotIndex =
-      this.helperService.getBreakPeriodTimeSlotIndex();
-    this.generateRoutineService.generateRoutines(
-      breakPeriodTimeSlotIndex,
-      daysInfo,
-      timeSlotsInfo
-    );
-    const bestRoutine = this.generateRoutineService.getBestRoutine();
-    this.dialog.open(RoutineComponent, {
-      width: '90vw', // or your desired width
-      maxWidth: '90vw',
-      data: {
-        universityName,
-        departmentName,
+    this.isLoading = true;
+    setTimeout(() => {
+      //console.log(this.routineForm.value);
+      this.finalData = this.routineForm.value;
+      // Use the below data for debugging purpose
+      //this.finalData = this.manualDataProviderService.getManualData();
+      this.helperService.storeFinalData(this.finalData);
+      const universityName = this.finalData.universityName;
+      const departmentName = this.finalData.departmentName;
+      const daysInfo = this.helperService.getDaysInfo();
+      const yearsSemestersInfo = this.helperService.getYearsSemestersInfo();
+      const timeSlotsInfo = this.helperService.getTimeSlots();
+      const breakPeriodTimeSlotIndex =
+        this.helperService.getBreakPeriodTimeSlotIndex();
+      this.generateRoutineService.generateRoutines(
+        breakPeriodTimeSlotIndex,
         daysInfo,
-        yearsSemestersInfo,
-        timeSlotsInfo,
-        bestRoutine,
-      },
+        timeSlotsInfo
+      );
+      const bestRoutine = this.generateRoutineService.getBestRoutine();
+      this.isLoading = false;
+      this.dialog.open(RoutineComponent, {
+        width: '90vw', // or your desired width
+        maxWidth: '90vw',
+        data: {
+          universityName,
+          departmentName,
+          daysInfo,
+          yearsSemestersInfo,
+          timeSlotsInfo,
+          bestRoutine,
+        },
+      });
     });
   }
 }
