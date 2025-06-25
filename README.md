@@ -1,3 +1,12 @@
+The best possible class routine has been generated based on the following criteria as much as possible:
+
+1. No more than one class of the same course is scheduled on the same day.
+2. Avoid scheduling too many consecutive classes for any teacher.
+3. Avoid scheduling too many consecutive classes for students.
+4. Ensure that the number of classes scheduled for any teacher in a single day is neither too few nor too many.
+5. Ensure that the number of classes scheduled for students in a single day is neither too few nor too many.
+
+
 # DynamicRoutine
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
