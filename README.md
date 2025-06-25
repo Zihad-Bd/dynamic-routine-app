@@ -6,6 +6,42 @@ The best possible class routine has been generated based on the following criter
 4. Ensure that the number of classes scheduled for any teacher in a single day is neither too few nor too many.
 5. Ensure that the number of classes scheduled for students in a single day is neither too few nor too many.
 
+## Routine Generation Approach
+
+The routine was generated through a multi-step process involving validation, fitness evaluation, and iterative improvement using crossover techniques:
+
+1. **Initial Routine Generation**
+   - A set of valid routines was first generated.
+   - A routine is considered valid if it satisfies:
+     - No student or teacher is scheduled for multiple classes at the same time on the same day.
+     - No room is assigned to more than one class at the same time on the same day.
+
+2. **Fitness Evaluation**
+   - Each valid routine was evaluated using a fitness score.
+   - The score reflects how well a routine satisfies several predefined criteria.
+   - The more criteria met, the higher the fitness score.
+
+3. **Crossover Operation**
+   - To improve routine quality, a genetic crossover method was applied:
+     - Two parent routines were selected.
+     - A course was randomly chosen, and its class times from both parents were retrieved.
+     - For a course with 3 weekly classes, 6 time slots (3 from each parent) were considered.
+     - Three non-overlapping time slots were randomly picked.
+     - These were combined with the remaining courses from the first parent to form a child routine.
+     - The second child was generated similarly using a mirrored process.
+
+4. **Selection and Iteration**
+   - All routines were sorted by fitness score.
+   - The top 50% were retained; the bottom 50% were discarded.
+   - Crossover was then repeated on the selected routines.
+   - This process was run for 50 total iterations.
+
+5. **Final Selection**
+   - After all iterations, the routine with the highest fitness score was chosen as the final output.
+
+> **Note:** Multiple valid and high-quality routines can be generated from the same input due to the randomness in the crossover process.
+
+
 
 # DynamicRoutine
 
